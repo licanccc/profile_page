@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Page,
   Navbar,
@@ -18,9 +18,28 @@ import Info from "../components/info";
 import Work from "../components/work";
 import Biography from "../components/biography";
 import Contact from "../components/contact";
+import axios from "axios";
 
 const HomePage = () => {
   const [selected, setSelected] = useState("info");
+
+  const getInfo = async () => {
+    try {
+      const response = await axios.get(
+        "https://my-json-server.typicode.com/licanccc/profile_db/db"
+      );
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      await getInfo();
+    }
+    fetchData();
+  });
 
   return (
     <Page name="home">

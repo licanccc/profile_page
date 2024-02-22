@@ -22,13 +22,15 @@ import axios from "axios";
 
 const HomePage = () => {
   const [selected, setSelected] = useState("info");
+  const [data, setData] = useState({});
 
   const getInfo = async () => {
     try {
       const response = await axios.get(
         "https://my-json-server.typicode.com/licanccc/profile_db/db"
       );
-      console.log(response);
+      const { data } = response;
+      setData(data);
     } catch (error) {
       console.error(error);
     }
@@ -39,7 +41,7 @@ const HomePage = () => {
       await getInfo();
     }
     fetchData();
-  });
+  }, []);
 
   return (
     <Page name="home">
@@ -78,16 +80,22 @@ const HomePage = () => {
       </Toolbar>
       <Tabs>
         <Tab id={"info"} tabActive>
-          <Info />
+          <Info data={data?.pages?.find((item) => item?.pageName === "info")} />
         </Tab>
         <Tab id={"work"}>
-          <Work />
+          <Work
+            data={data?.pages?.find((item) => item?.pageName === "project")}
+          />
         </Tab>
         <Tab id={"biography"}>
-          <Biography />
+          <Biography
+            data={data?.pages?.find((item) => item?.pageName === "biography")}
+          />
         </Tab>
         <Tab id={"contact"}>
-          <Contact />
+          <Contact
+            data={data?.pages?.find((item) => item?.pageName === "contact")}
+          />
         </Tab>
       </Tabs>
       <Toolbar bottom>
